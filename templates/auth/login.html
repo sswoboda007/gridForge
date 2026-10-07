@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Demo Login — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card narrow-card">
+    <p class="eyebrow">Demo access</p>
+    <h1>Choose a local demo role.</h1>
+    <p>This temporary login exists so role guards can be tested before durable authentication is added.</p>
+    <div class="demo-user-list">
+        {% for demo_user in demo_users %}
+            <form action="{{ url_for('auth.demoLogin') }}" method="post">
+                <input name="next" type="hidden" value="{{ next_path }}">
+                <input name="userId" type="hidden" value="{{ demo_user.id }}">
+                <button class="button secondary" type="submit">
+                    {{ demo_user.label }}
+                    <span>{{ demo_user.email }}</span>
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
