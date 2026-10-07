@@ -1,0 +1,69 @@
+[project]
+name = "gridforge-command-cloud"
+version = "0.1.0"
+description = "Cloud-first workflow operating system for GridForge Systems."
+requires-python = ">=3.11"
+dependencies = [
+    "Flask==3.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==2.2.0",
+    "pytest==8.3.5",
+    "pytest-cov==7.0.0",
+    "ruff==0.15.22",
+]
+
+[tool.setuptools.packages.find]
+include = ["gridforge*"]
+namespaces = false
+
+[tool.pytest.ini_options]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+]
+testpaths = ["tests"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+branch = true
+source = ["gridforge"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "\\.\\.\\.",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "venv"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["gridforge", "tests", "main.py", "flaskApp.py"]
+mypy_path = "."
+check_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+follow_imports = "skip"
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_ignores = true
+exclude = [
+    "^\\.venv/",
+    "^venv/",
+]

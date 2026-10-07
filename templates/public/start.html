@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Start Blueprint — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card narrow-card">
+    <p class="eyebrow">Start Blueprint</p>
+    <h1>Describe the workflow you want to improve.</h1>
+    <p>Phase 0 establishes the application foundation. Guided intake storage will be added in the next implementation phase.</p>
+    <div class="warning-box">
+        <strong>Sensitive data warning</strong>
+        <p>Do not enter passwords, private keys, payment card numbers, medical records, legal secrets, or other highly sensitive data. AI will be used only to create planning drafts in later phases.</p>
+    </div>
+    <a class="button primary" href="{{ url_for('public.landingPage') }}">Back to Overview</a>
+</section>
+{% endblock %}

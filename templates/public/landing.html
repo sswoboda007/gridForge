@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="hero-card">
+    <p class="eyebrow">Workflow operating system</p>
+    <h1>Turn messy workflows into private, role-based webapp systems.</h1>
+    <p class="hero-copy">GridForge Command Cloud organizes intake, blueprints, developer plans, implementation slices, QA validation, handoff, support, reports, exports, and audit history in one command center.</p>
+    <div class="button-row">
+        <a class="button primary" href="{{ url_for('public.startPage') }}">Start Blueprint</a>
+        <a class="button secondary" href="{{ url_for('health.healthCheck') }}">Check Health</a>
+    </div>
+</section>
+
+<section class="metric-grid" aria-label="MVP focus areas">
+    <article class="metric-card">
+        <span>Intake</span>
+        <h2>Capture</h2>
+        <p>Collect customer workflow context, roles, pain points, and success criteria.</p>
+    </article>
+    <article class="metric-card">
+        <span>Blueprint</span>
+        <h2>Review</h2>
+        <p>Generate planning drafts, validate output, and require human review.</p>
+    </article>
+    <article class="metric-card">
+        <span>Build</span>
+        <h2>Track</h2>
+        <p>Turn approved scope into developer plans, slices, QA checks, and handoff records.</p>
+    </article>
+</section>
+
+<section class="content-card">
+    <p class="eyebrow">MVP boundaries</p>
+    <h2>Cloud-first and web-first.</h2>
+    <p>Native mobile, offline-first sync, SMS, payment processing, and compliance certification workflows are intentionally deferred unless explicitly approved.</p>
+</section>
+{% endblock %}
