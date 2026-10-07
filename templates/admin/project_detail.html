@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ project.project_name }} — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card">
+    <p class="eyebrow">Internal project detail</p>
+    <h1>{{ project.project_name }}</h1>
+    <div class="detail-grid">
+        <article>
+            <h2>Customer</h2>
+            {% if organization %}
+                <p><strong>{{ organization.organization_name }}</strong></p>
+                <p>{{ organization.primary_contact_name }} · {{ organization.primary_contact_email }}</p>
+            {% else %}
+                <p>Organization record missing.</p>
+            {% endif %}
+        </article>
+        <article>
+            <h2>Status</h2>
+            <p><span class="status-pill">{{ project.status.value }}</span></p>
+            <p>{{ project.next_action }}</p>
+        </article>
+    </div>
+</section>
+
+<section class="content-card">
+    <h2>Workflow summary</h2>
+    <p>{{ project.painful_workflow_description }}</p>
+    <dl class="definition-list">
+        <dt>Workflow type</dt>
+        <dd>{{ project.workflow_type }}</dd>
+        <dt>Current tools</dt>
+        <dd>{{ project.current_tools | join(', ') if project.current_tools else 'Not provided' }}</dd>
+        <dt>Desired outcome</dt>
+        <dd>{{ project.desired_outcome or 'Not provided' }}</dd>
+        <dt>Success definition</dt>
+        <dd>{{ project.success_definition or 'Not provided' }}</dd>
+        <dt>Risk flags</dt>
+        <dd>{{ project.risk_flags | join(', ') if project.risk_flags else 'None' }}</dd>
+    </dl>
+</section>
+
+<section class="metric-grid" aria-label="Intake and audit details">
+    <article class="metric-card">
+        <span>Intakes</span>
+        <h2>{{ intakes | length }}</h2>
+        {% for intake in intakes %}
+            <p>{{ intake.status.value }} · {{ intake.completion_percent }}% covered</p>
+        {% endfor %}
+    </article>
+    <article class="metric-card">
+        <span>Audit events</span>
+        <h2>{{ audit_events | length }}</h2>
+        {% for event in audit_events %}
+            <p>{{ event.event_type }} · {{ event.safe_summary }}</p>
+        {% endfor %}
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Start Blueprint — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card narrow-card">
+    <p class="eyebrow">Start Blueprint</p>
+    <h1>Describe the workflow you want to improve.</h1>
+    <p>Submit the first version of a Customer Workflow Project. GridForge will track missing blueprint details before generation.</p>
+    <div class="warning-box">
+        <strong>Sensitive data warning</strong>
+        <p>Do not enter passwords, private keys, payment card numbers, medical records, legal secrets, or other highly sensitive data. AI planning drafts require consent and human review.</p>
+    </div>
+    <form class="form-grid" action="{{ url_for('intake.createIntake') }}" method="post">
+        <label>
+            Organization name
+            <input name="organizationName" required>
+        </label>
+        <label>
+            Primary contact name
+            <input name="primaryContactName" required>
+        </label>
+        <label>
+            Primary contact email
+            <input name="primaryContactEmail" type="email" required>
+        </label>
+        <label>
+            Workflow type
+            <input name="workflowType" required>
+        </label>
+        <label class="full-span">
+            Painful workflow description
+            <textarea name="workflowDescription" rows="4" required></textarea>
+        </label>
+        <label class="full-span">
+            Current tools
+            <input name="currentTools" placeholder="Spreadsheets, email, AI chats">
+        </label>
+        <label class="full-span">
+            Desired easier outcome
+            <textarea name="desiredOutcome" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Success definition
+            <textarea name="successDefinition" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Users and permissions
+            <textarea name="usersPermissions" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Workflow lifecycle and statuses
+            <textarea name="workflowLifecycle" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Data, forms, and files
+            <textarea name="formsDataFiles" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Dashboards and reports
+            <textarea name="dashboardsReports" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Integrations and notifications
+            <textarea name="integrationsNotifications" rows="3"></textarea>
+        </label>
+        <label class="checkbox-line full-span">
+            <input name="aiConsentAccepted" type="checkbox" required>
+            I understand AI may be used to create a planning draft.
+        </label>
+        <label class="checkbox-line full-span">
+            <input name="termsAccepted" type="checkbox" required>
+            I understand this is a planning draft, not a quote or compliance guarantee.
+        </label>
+        <button class="button primary" type="submit">Submit Intake</button>
+    </form>
+</section>
+{% endblock %}

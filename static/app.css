@@ -92,6 +92,28 @@ a:hover {
     padding-bottom: 48px;
 }
 
+.auth-status {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.inline-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.inline-form button {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    padding: 8px 12px;
+}
+
 .hero-card,
 .content-card,
 .metric-card {
@@ -154,6 +176,31 @@ a:hover {
     color: var(--ink);
 }
 
+.demo-user-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.demo-user-list form {
+    margin: 0;
+}
+
+.demo-user-list button {
+    align-items: flex-start;
+    cursor: pointer;
+    flex-direction: column;
+    font: inherit;
+    font-weight: 900;
+    width: 100%;
+}
+
+.demo-user-list button span {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
 .metric-grid {
     display: grid;
     gap: 18px;
@@ -198,6 +245,93 @@ a:hover {
 .warning-box p {
     color: #7c2d12;
     margin-bottom: 0;
+}
+
+.form-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 24px;
+}
+
+.form-grid label {
+    color: var(--ink);
+    display: grid;
+    font-weight: 800;
+    gap: 8px;
+}
+
+.form-grid input,
+.form-grid textarea {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink);
+    font: inherit;
+    padding: 12px 14px;
+    width: 100%;
+}
+
+.checkbox-line {
+    align-items: center;
+    display: flex !important;
+    font-weight: 700 !important;
+}
+
+.checkbox-line input {
+    width: auto;
+}
+
+.full-span {
+    grid-column: 1 / -1;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border-bottom: 1px solid var(--line);
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.status-pill {
+    background: rgba(20, 184, 166, 0.12);
+    border: 1px solid rgba(20, 184, 166, 0.35);
+    border-radius: 999px;
+    color: var(--primary-dark);
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 900;
+    padding: 4px 10px;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.definition-list {
+    display: grid;
+    gap: 8px 18px;
+    grid-template-columns: minmax(140px, max-content) 1fr;
+}
+
+.definition-list dt {
+    color: var(--muted);
+    font-weight: 900;
+}
+
+.definition-list dd {
+    margin: 0;
 }
 
 .site-footer {

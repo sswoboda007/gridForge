@@ -24,7 +24,11 @@ from flask import Flask
 # 3) Application-specific imports (alphabetized)
 from gridforge.configLoader import loadConfig
 from gridforge.repositoryBundle import AppRepositories, createDefaultRepositories
+from gridforge.web.auth.roleGuards import getTemplateAuthContext
+from gridforge.web.blueprints.adminRoutes import createAdminBlueprint
+from gridforge.web.blueprints.authRoutes import createAuthBlueprint
 from gridforge.web.blueprints.healthRoutes import createHealthBlueprint
+from gridforge.web.blueprints.intakeRoutes import createIntakeBlueprint
 from gridforge.web.blueprints.publicRoutes import createPublicBlueprint
 
 
@@ -49,7 +53,11 @@ def createApp(
     app_repositories = repositories or createDefaultRepositories(app_config)
     app.extensions["gridforge_repositories"] = app_repositories
     app.context_processor(getTemplateContext)
+    app.context_processor(getTemplateAuthContext)
     app.register_blueprint(createPublicBlueprint(app_repositories))
+    app.register_blueprint(createAuthBlueprint())
+    app.register_blueprint(createIntakeBlueprint(app_repositories))
+    app.register_blueprint(createAdminBlueprint(app_repositories))
     app.register_blueprint(createHealthBlueprint(app_repositories))
     return app
 

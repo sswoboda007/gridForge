@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin Projects — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card">
+    <p class="eyebrow">Internal review</p>
+    <h1>Customer Workflow Projects</h1>
+    <p>This page is internal-only and requires the temporary local admin header until Phase 3 route guards are implemented.</p>
+    {% if projects %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Organization</th>
+                        <th>Status</th>
+                        <th>Workflow type</th>
+                        <th>Next action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                        {% set organization = organizations.get(project.organization_id) %}
+                        <tr>
+                            <td><a href="{{ url_for('admin.projectDetail', project_id=project.id) }}">{{ project.project_name }}</a></td>
+                            <td>{{ organization.organization_name if organization else project.organization_id }}</td>
+                            <td><span class="status-pill">{{ project.status.value }}</span></td>
+                            <td>{{ project.workflow_type }}</td>
+                            <td>{{ project.next_action }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No customer workflow projects have been submitted yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

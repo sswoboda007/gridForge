@@ -51,6 +51,12 @@ def test_appFactoryRegistersExpectedRoutes(app: Flask) -> None:
 
     assert "/" in route_paths
     assert "/start" in route_paths
+    assert "/admin/projects" in route_paths
+    assert "/admin/projects/<project_id>" in route_paths
+    assert "/api/intake" in route_paths
+    assert "/auth/demo-login" in route_paths
+    assert "/auth/login" in route_paths
+    assert "/auth/logout" in route_paths
     assert "/health" in route_paths
 
 

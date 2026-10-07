@@ -20,7 +20,7 @@ from typing import Mapping
 # 2) Third-party imports (alphabetized)
 
 # 3) Application-specific imports (alphabetized)
-from gridforge.repositoryBundle import AppRepositories
+from gridforge.repositoryBundle import AppRepositories, createMemoryRepositories
 
 
 class FakeHealthRepository:
@@ -43,6 +43,6 @@ def createFakeRepositories() -> AppRepositories:
     Creates a fake repository bundle for tests.
 
     Returns:
-        AppRepositories backed by deterministic fakes.
+        AppRepositories backed by deterministic in-memory repositories.
     """
-    return AppRepositories(health_repo=FakeHealthRepository())
+    return createMemoryRepositories(health_repo=FakeHealthRepository())

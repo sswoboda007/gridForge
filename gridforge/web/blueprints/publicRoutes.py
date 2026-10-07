@@ -50,11 +50,11 @@ def createPublicBlueprint(repositories: AppRepositories) -> Blueprint:
     @public_routes.get("/start")
     def startPage() -> str:
         """
-        Renders the Phase 0 blueprint start page placeholder.
+        Renders the Phase 2 blueprint intake form.
 
         Returns:
             Rendered start page HTML.
         """
-        return cast(str, render_template("public/start.html"))
+        return cast(str, render_template("intake/form.html"))
 
     return public_routes
