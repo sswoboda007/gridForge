@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Developer Plan — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Developer-only implementation plan</p>
+    <h1>Developer Plan</h1>
+    <p class="warning-text">Developer-only content. Do not share this implementation plan with customer users.</p>
+    <p><span class="status-pill">{{ developer_plan.status.value }}</span> · validation: {{ developer_plan.validation_status }}</p>
+    {% if project %}
+        <p>Project: <a href="{{ url_for('admin.projectDetail', project_id=project.id) }}">{{ project.project_name }}</a></p>
+    {% endif %}
+    {% if blueprint %}
+        <p>Approved blueprint: <a href="{{ url_for('blueprint.adminBlueprintDetail', blueprint_id=blueprint.id) }}">{{ blueprint.title }}</a></p>
+    {% endif %}
+</section>
+
+<section class="content-card">
+    <h2>Implementation overview</h2>
+    <p>{{ developer_plan.implementation_overview }}</p>
+    <dl class="definition-list">
+        <dt>Prompt version</dt>
+        <dd>{{ developer_plan.prompt_version }}</dd>
+        <dt>Model</dt>
+        <dd>{{ developer_plan.model }}</dd>
+        <dt>Raw response ref</dt>
+        <dd>{{ developer_plan.raw_response_ref }}</dd>
+    </dl>
+</section>
+
+<section class="content-card">
+    <h2>Implementation slice specs</h2>
+    {% if developer_plan.implementation_slices_json %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Slice</th>
+                        <th>Goal</th>
+                        <th>Acceptance criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for slice_spec in developer_plan.implementation_slices_json %}
+                        <tr>
+                            <td>{{ slice_spec.name }}</td>
+                            <td>{{ slice_spec.goal }}</td>
+                            <td>{{ slice_spec.acceptanceCriteria | join(', ') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No implementation slices were generated.</p>
+    {% endif %}
+</section>
+
+<section class="detail-grid">
+    <article class="content-card">
+        <h2>Routes</h2>
+        <ul>
+            {% for route_spec in developer_plan.route_specs_json %}
+                <li><strong>{{ route_spec.method }}</strong> {{ route_spec.route }} — {{ route_spec.auth }}</li>
+            {% endfor %}
+        </ul>
+    </article>
+    <article class="content-card">
+        <h2>Authorization policies</h2>
+        <ul>
+            {% for policy in developer_plan.authorization_policies_json %}
+                <li>{{ policy.role }} · {{ policy.scope }} · {{ policy.rules | join(', ') }}</li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+
+<section class="content-card">
+    <h2>Technical review</h2>
+    {% if developer_plan.status.value == 'needs_technical_review' %}
+        <div class="button-row">
+            <form action="{{ url_for('developer.reviewDeveloperPlan', developer_plan_id=developer_plan.id) }}" method="post">
+                <input name="action" type="hidden" value="approve">
+                <button class="button primary" type="submit">Approve Developer Plan</button>
+            </form>
+        </div>
+        <form class="form-grid" action="{{ url_for('developer.reviewDeveloperPlan', developer_plan_id=developer_plan.id) }}" method="post">
+            <input name="action" type="hidden" value="block">
+            <label class="full-span">
+                Blocker reason
+                <textarea name="blockerReason" rows="3" required></textarea>
+            </label>
+            <button class="button secondary" type="submit">Block Developer Plan</button>
+        </form>
+    {% else %}
+        <p>Technical review status: {{ developer_plan.internal_approval_status.value }}</p>
+    {% endif %}
+</section>
+
+<section class="content-card internal-panel">
+    <h2>Internal validation and audit</h2>
+    <dl class="definition-list">
+        <dt>Validation errors</dt>
+        <dd>{{ developer_plan.validation_errors_json }}</dd>
+        <dt>Blocking questions</dt>
+        <dd>{{ developer_plan.blocking_questions_json | join(', ') }}</dd>
+        <dt>Audit events</dt>
+        <dd>{{ audit_events | length }}</dd>
+    </dl>
+</section>
+{% endblock %}

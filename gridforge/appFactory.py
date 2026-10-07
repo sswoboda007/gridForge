@@ -27,9 +27,15 @@ from gridforge.repositoryBundle import AppRepositories, createDefaultRepositorie
 from gridforge.web.auth.roleGuards import getTemplateAuthContext
 from gridforge.web.blueprints.adminRoutes import createAdminBlueprint
 from gridforge.web.blueprints.authRoutes import createAuthBlueprint
+from gridforge.web.blueprints.blueprintRoutes import createBlueprintBlueprint
+from gridforge.web.blueprints.developerRoutes import createDeveloperBlueprint
+from gridforge.web.blueprints.exportRoutes import createExportBlueprint
 from gridforge.web.blueprints.healthRoutes import createHealthBlueprint
+from gridforge.web.blueprints.implementationRoutes import createImplementationBlueprint
 from gridforge.web.blueprints.intakeRoutes import createIntakeBlueprint
 from gridforge.web.blueprints.publicRoutes import createPublicBlueprint
+from gridforge.web.blueprints.qaRoutes import createQaBlueprint
+from gridforge.web.blueprints.supportRoutes import createSupportBlueprint
 
 
 def createApp(
@@ -58,6 +64,12 @@ def createApp(
     app.register_blueprint(createAuthBlueprint())
     app.register_blueprint(createIntakeBlueprint(app_repositories))
     app.register_blueprint(createAdminBlueprint(app_repositories))
+    app.register_blueprint(createBlueprintBlueprint(app_repositories))
+    app.register_blueprint(createDeveloperBlueprint(app_repositories))
+    app.register_blueprint(createImplementationBlueprint(app_repositories))
+    app.register_blueprint(createQaBlueprint(app_repositories))
+    app.register_blueprint(createExportBlueprint(app_repositories))
+    app.register_blueprint(createSupportBlueprint(app_repositories))
     app.register_blueprint(createHealthBlueprint(app_repositories))
     return app
 

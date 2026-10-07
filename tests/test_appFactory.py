@@ -57,6 +57,33 @@ def test_appFactoryRegistersExpectedRoutes(app: Flask) -> None:
     assert "/auth/demo-login" in route_paths
     assert "/auth/login" in route_paths
     assert "/auth/logout" in route_paths
+    assert "/admin/blueprints/<blueprint_id>" in route_paths
+    assert "/admin/blueprints/<blueprint_id>/review" in route_paths
+    assert "/admin/projects/<project_id>/generate-blueprint" in route_paths
+    assert "/admin/review-queue" in route_paths
+    assert "/customer/blueprints/<blueprint_id>" in route_paths
+    assert "/customer/blueprints/<blueprint_id>/approve" in route_paths
+    assert "/customer/blueprints/<blueprint_id>/changes-requested" in route_paths
+    assert "/admin/blueprints/<blueprint_id>/generate-developer-plan" in route_paths
+    assert "/developer/plans/<developer_plan_id>" in route_paths
+    assert "/developer/plans/<developer_plan_id>/review" in route_paths
+    assert "/developer/projects/<project_id>/slices" in route_paths
+    assert "/developer/slices/<slice_id>/status" in route_paths
+    assert "/developer/slices/<slice_id>/blockers" in route_paths
+    assert "/qa/projects/<project_id>" in route_paths
+    assert "/qa/projects/<project_id>/items" in route_paths
+    assert "/qa/items/<qa_item_id>/status" in route_paths
+    assert "/admin" in route_paths
+    assert "/admin/audit-log" in route_paths
+    assert "/admin/role-matrix" in route_paths
+    assert "/exports/project/<project_id>/customer-summary.csv" in route_paths
+    assert "/exports/project/<project_id>/blueprint-summary.csv" in route_paths
+    assert "/exports/project/<project_id>/developer-plan-internal.csv" in route_paths
+    assert "/exports/project/<project_id>/qa-handoff.csv" in route_paths
+    assert "/exports/audit.csv" in route_paths
+    assert "/support/projects/<project_id>" in route_paths
+    assert "/support/projects/<project_id>/requests" in route_paths
+    assert "/support/requests/<request_id>/status" in route_paths
     assert "/health" in route_paths
 
 

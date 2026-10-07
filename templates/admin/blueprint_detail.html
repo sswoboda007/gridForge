@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ blueprint.title }} — Internal Blueprint Review{% endblock %}
+{% block content %}
+<section class="content-card">
+    <p class="eyebrow">Internal blueprint review</p>
+    <h1>{{ blueprint.title }}</h1>
+    <p><span class="status-pill">{{ blueprint.status.value }}</span> · validation: {{ blueprint.validation_status }}</p>
+    {% if project %}
+        <p>Project: <a href="{{ url_for('admin.projectDetail', project_id=project.id) }}">{{ project.project_name }}</a></p>
+    {% endif %}
+    {% if blueprint.status.value == 'needs_internal_review' %}
+        <form class="form-grid" action="{{ url_for('blueprint.reviewBlueprint', blueprint_id=blueprint.id) }}" method="post">
+            <input name="action" type="hidden" value="ready_for_customer_review">
+            <label class="full-span">
+                Internal reviewer notes
+                <textarea name="reviewerNotes" rows="3"></textarea>
+            </label>
+            <button class="button primary" type="submit">Mark Ready for Customer Review</button>
+        </form>
+    {% elif blueprint.status.value == 'approved' %}
+        <form class="button-row" action="{{ url_for('developer.generateDeveloperPlan', blueprint_id=blueprint.id) }}" method="post">
+            <button class="button primary" type="submit">Generate Developer Plan</button>
+        </form>
+    {% endif %}
+</section>
+
+<section class="content-card">
+    <h2>Customer-facing content</h2>
+    <dl class="definition-list">
+        <dt>Summary</dt>
+        <dd>{{ blueprint.app_summary }}</dd>
+        <dt>Problem</dt>
+        <dd>{{ blueprint.problem_being_solved }}</dd>
+        <dt>MVP scope</dt>
+        <dd>{{ blueprint.mvp_scope_json | join(', ') }}</dd>
+        <dt>Risks and unknowns</dt>
+        <dd>{{ blueprint.risks_and_unknowns_json | join(', ') }}</dd>
+    </dl>
+</section>
+
+<section class="content-card internal-panel">
+    <h2>Internal-only metadata</h2>
+    <dl class="definition-list">
+        <dt>Prompt version</dt>
+        <dd>{{ blueprint.prompt_version }}</dd>
+        <dt>Model</dt>
+        <dd>{{ blueprint.model }}</dd>
+        <dt>Raw response ref</dt>
+        <dd>{{ blueprint.raw_response_ref }}</dd>
+        <dt>Validation errors</dt>
+        <dd>{{ blueprint.validation_errors_json }}</dd>
+        <dt>Reviewer notes</dt>
+        <dd>{{ blueprint.internal_reviewer_notes or 'Not reviewed yet' }}</dd>
+        <dt>AI logs</dt>
+        <dd>{{ ai_logs | length }}</dd>
+        <dt>Audit events</dt>
+        <dd>{{ audit_events | length }}</dd>
+    </dl>
+</section>
+{% endblock %}

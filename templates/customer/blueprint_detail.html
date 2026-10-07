@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ blueprint.title }} — Customer Blueprint{% endblock %}
+{% block content %}
+<section class="content-card">
+    <p class="eyebrow">Customer blueprint</p>
+    <h1>{{ blueprint.title }}</h1>
+    <p><span class="status-pill">{{ blueprint.status }}</span></p>
+    {% if project %}
+        <p>{{ project.project_name }}</p>
+    {% endif %}
+</section>
+
+<section class="content-card">
+    <h2>Recommended workflow system</h2>
+    <p>{{ blueprint.app_summary }}</p>
+    <h3>Problem being solved</h3>
+    <p>{{ blueprint.problem_being_solved }}</p>
+    <div class="detail-grid">
+        <article>
+            <h3>MVP scope</h3>
+            <ul>
+                {% for item in blueprint.mvp_scope_json %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+        <article>
+            <h3>Phase two scope</h3>
+            <ul>
+                {% for item in blueprint.phase_two_scope_json %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+        <article>
+            <h3>Risks and unknowns</h3>
+            <ul>
+                {% for item in blueprint.risks_and_unknowns_json %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+        <article>
+            <h3>Suggested milestones</h3>
+            <ul>
+                {% for item in blueprint.suggested_build_milestones_json %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+    </div>
+</section>
+
+{% if blueprint.status == 'ready_for_customer_review' %}
+    <section class="content-card">
+        <h2>Customer decision</h2>
+        <div class="button-row">
+            <form action="{{ url_for('blueprint.approveCustomerBlueprint', blueprint_id=blueprint.id) }}" method="post">
+                <button class="button primary" type="submit">Approve Blueprint</button>
+            </form>
+        </div>
+        <form class="form-grid" action="{{ url_for('blueprint.requestCustomerBlueprintChanges', blueprint_id=blueprint.id) }}" method="post">
+            <label class="full-span">
+                Requested changes
+                <textarea name="changeNote" rows="3" required></textarea>
+            </label>
+            <button class="button secondary" type="submit">Request Changes</button>
+        </form>
+    </section>
+{% endif %}
+{% endblock %}

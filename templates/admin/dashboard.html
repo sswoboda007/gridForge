@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Command center</p>
+    <h1>GridForge Admin Dashboard</h1>
+    <p class="warning-text">Internal command-center dashboard. Customer-safe exports must redact developer, AI, and internal fields.</p>
+    <p>Role-scoped dashboard sections are based on your current demo role.</p>
+</section>
+
+<section class="metric-grid" aria-label="Pipeline overview">
+    <article class="metric-card"><span>Total active projects</span><h2>{{ metrics.counts.totalActiveProjects }}</h2></article>
+    <article class="metric-card"><span>New leads this month</span><h2>{{ metrics.counts.newLeadsThisMonth }}</h2></article>
+    <article class="metric-card"><span>Intakes in progress</span><h2>{{ metrics.counts.intakesInProgress }}</h2></article>
+    <article class="metric-card"><span>Ready for blueprint</span><h2>{{ metrics.counts.intakesReadyForBlueprint }}</h2></article>
+    <article class="metric-card"><span>Blueprints needing review</span><h2>{{ metrics.counts.blueprintsNeedingInternalReview }}</h2></article>
+    <article class="metric-card"><span>Blueprints waiting on customer</span><h2>{{ metrics.counts.blueprintsWaitingOnCustomerInput }}</h2></article>
+    <article class="metric-card"><span>Blueprints approved</span><h2>{{ metrics.counts.blueprintsApproved }}</h2></article>
+    <article class="metric-card"><span>Developer plans pending</span><h2>{{ metrics.counts.developerPlansPending }}</h2></article>
+    <article class="metric-card"><span>Developer plans needing review</span><h2>{{ metrics.counts.developerPlansNeedingReview }}</h2></article>
+    <article class="metric-card"><span>Developer plans approved</span><h2>{{ metrics.counts.developerPlansApproved }}</h2></article>
+    <article class="metric-card"><span>Active builds</span><h2>{{ metrics.counts.activeBuilds }}</h2></article>
+    <article class="metric-card"><span>Blocked builds</span><h2>{{ metrics.counts.blockedBuilds }}</h2></article>
+    <article class="metric-card"><span>Slices completed</span><h2>{{ metrics.counts.implementationSlicesCompleted }}</h2></article>
+    <article class="metric-card"><span>QA open</span><h2>{{ metrics.counts.qaOpen }}</h2></article>
+    <article class="metric-card"><span>QA failed</span><h2>{{ metrics.counts.qaFailed }}</h2></article>
+    <article class="metric-card"><span>QA passed</span><h2>{{ metrics.counts.qaPassed }}</h2></article>
+    <article class="metric-card"><span>Demo ready</span><h2>{{ metrics.counts.demoReady }}</h2></article>
+    <article class="metric-card"><span>Handoff ready</span><h2>{{ metrics.counts.handoffReady }}</h2></article>
+    <article class="metric-card"><span>Support / retainer</span><h2>{{ metrics.counts.supportRetainer }}</h2></article>
+    <article class="metric-card"><span>Overdue next actions</span><h2>{{ metrics.counts.overdueNextActions }}</h2></article>
+    <article class="metric-card"><span>AI validation failures</span><h2>{{ metrics.counts.aiValidationFailures }}</h2></article>
+    <article class="metric-card"><span>Exports ready</span><h2>{{ metrics.counts.exportsReady }}</h2></article>
+</section>
+
+<section class="detail-grid">
+    <article class="content-card">
+        <h2>Review Queue</h2>
+        <ul>
+            <li>Blueprints needing review: {{ metrics.review_queue.blueprintsNeedingReview }}</li>
+            <li>Developer plans needing review: {{ metrics.review_queue.developerPlansNeedingReview }}</li>
+            <li>AI validation failures: {{ metrics.review_queue.aiValidationFailures }}</li>
+            <li>Customer change requests: {{ metrics.review_queue.customerChangeRequests }}</li>
+            <li>QA failures: {{ metrics.review_queue.qaFailures }}</li>
+        </ul>
+    </article>
+    <article class="content-card">
+        <h2>Role-scoped actions</h2>
+        <ul>
+            <li><a href="{{ url_for('admin.projectList') }}">Project health board</a></li>
+            <li><a href="{{ url_for('admin.roleMatrix') }}">Role matrix</a></li>
+            {% if can_view_admin_sections %}
+                <li><a href="{{ url_for('admin.auditLog') }}">Admin audit controls</a></li>
+                <li><a href="{{ url_for('export.auditExport') }}">Download audit CSV</a></li>
+            {% endif %}
+        </ul>
+    </article>
+</section>
+
+<section class="content-card">
+    <h2>Project Health Board</h2>
+    {% if metrics.project_health %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Status</th>
+                        <th>Next action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in metrics.project_health %}
+                        <tr>
+                            <td><a href="{{ url_for('admin.projectDetail', project_id=project.id) }}">{{ project.project_name }}</a></td>
+                            <td><span class="status-pill">{{ project.status.value }}</span></td>
+                            <td>{{ project.next_action }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No projects yet.</p>
+    {% endif %}
+</section>
+
+{% if can_view_admin_sections %}
+<section class="content-card">
+    <h2>Recent audit events</h2>
+    {% if metrics.recent_audit_events %}
+        <ul>
+            {% for event in metrics.recent_audit_events %}
+                <li>{{ event.event_type }} · {{ event.safe_summary }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No audit events yet.</p>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}

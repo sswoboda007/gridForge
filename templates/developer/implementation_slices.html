@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Implementation Slices — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Developer workflow</p>
+    <h1>Implementation Slices</h1>
+    <p class="warning-text">Developer-only implementation workflow. Customer users must not receive internal slice or QA details.</p>
+    <p><span class="status-pill">{{ project.status.value }}</span> · {{ project.next_action }}</p>
+    {% if developer_plan %}
+        <p>Developer plan: <a href="{{ url_for('developer.developerPlanDetail', developer_plan_id=developer_plan.id) }}">{{ developer_plan.id }}</a></p>
+    {% endif %}
+    <form class="button-row" action="{{ url_for('implementation.createProjectSlices', project_id=project.id) }}" method="post">
+        <button class="button primary" type="submit">Create Slices from Approved Plan</button>
+    </form>
+</section>
+
+<section class="content-card">
+    <h2>Build slices</h2>
+    {% if slices %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Slice</th>
+                        <th>Status</th>
+                        <th>QA</th>
+                        <th>Priority</th>
+                        <th>Definition of done</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for implementation_slice in slices %}
+                        <tr>
+                            <td>{{ implementation_slice.name }}</td>
+                            <td><span class="status-pill">{{ implementation_slice.status.value }}</span></td>
+                            <td>{{ implementation_slice.qa_status.value }}</td>
+                            <td>{{ implementation_slice.priority }}</td>
+                            <td>{{ implementation_slice.definition_of_done_json | join(', ') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No implementation slices have been created yet.</p>
+    {% endif %}
+</section>
+
+<section class="content-card">
+    <h2>QA items</h2>
+    {% if qa_items %}
+        <ul>
+            {% for item in qa_items %}
+                <li>{{ item.title }} · <span class="status-pill">{{ item.status.value }}</span></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No QA items have been generated yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

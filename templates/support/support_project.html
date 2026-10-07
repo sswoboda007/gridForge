@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Support — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Support workspace</p>
+    <h1>Support Requests</h1>
+    <p class="warning-text">Support requests can be created only after handoff or support-ready status.</p>
+    <p><span class="status-pill">{{ project.status.value }}</span> · {{ project.next_action }}</p>
+</section>
+
+<section class="content-card">
+    <h2>Create support request</h2>
+    <form class="form-grid" action="{{ url_for('support.createSupportRequest', project_id=project.id) }}" method="post">
+        <label>
+            Title
+            <input name="title" required>
+        </label>
+        <label>
+            Type
+            <input name="requestType" value="support">
+        </label>
+        <label>
+            Priority
+            <select name="priority">
+                <option value="low">low</option>
+                <option value="medium" selected>medium</option>
+                <option value="high">high</option>
+            </select>
+        </label>
+        <label class="full-span">
+            Customer description
+            <textarea name="customerDescription" rows="3" required></textarea>
+        </label>
+        <button class="button primary" type="submit">Create Support Request</button>
+    </form>
+</section>
+
+<section class="content-card">
+    <h2>Open and historical requests</h2>
+    {% if support_requests %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Request</th>
+                        <th>Type</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Customer response</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for support_request in support_requests %}
+                        <tr>
+                            <td>{{ support_request.title }}</td>
+                            <td>{{ support_request.request_type }}</td>
+                            <td>{{ support_request.priority }}</td>
+                            <td><span class="status-pill">{{ support_request.status.value }}</span></td>
+                            <td>{{ support_request.customer_visible_response }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No support requests yet.</p>
+    {% endif %}
+</section>
+
+<section class="content-card">
+    <h2>Support audit events</h2>
+    {% for event in audit_events %}
+        <p>{{ event.event_type }} · {{ event.safe_summary }}</p>
+    {% else %}
+        <p>No support audit events yet.</p>
+    {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Blueprint Review Queue — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card">
+    <p class="eyebrow">Internal review</p>
+    <h1>Blueprint Review Queue</h1>
+    <p>Customer-facing blueprint drafts must pass human review before any customer route can display them.</p>
+    {% if blueprints %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Blueprint</th>
+                        <th>Project</th>
+                        <th>Organization</th>
+                        <th>Status</th>
+                        <th>Validation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for blueprint in blueprints %}
+                        {% set project = projects.get(blueprint.project_id) %}
+                        {% set organization = organizations.get(blueprint.organization_id) %}
+                        <tr>
+                            <td><a href="{{ url_for('blueprint.adminBlueprintDetail', blueprint_id=blueprint.id) }}">{{ blueprint.title }}</a></td>
+                            <td>{{ project.project_name if project else blueprint.project_id }}</td>
+                            <td>{{ organization.organization_name if organization else blueprint.organization_id }}</td>
+                            <td><span class="status-pill">{{ blueprint.status.value }}</span></td>
+                            <td>{{ blueprint.validation_status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No blueprint drafts are waiting for internal review.</p>
+    {% endif %}
+</section>
+{% endblock %}

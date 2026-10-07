@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Role Matrix — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Role-scoped access</p>
+    <h1>Role Matrix</h1>
+    <p>GridForge routes fail closed on missing or insufficient roles.</p>
+</section>
+
+<section class="content-card">
+    <h2>Phase 7 role-scoped dashboard sections</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Dashboard</th>
+                    <th>Customer-safe exports</th>
+                    <th>Internal exports</th>
+                    <th>Support</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for role in user_roles %}
+                    <tr>
+                        <td>{{ role.value }}</td>
+                        <td>{{ 'yes' if role.value not in ['public_visitor', 'customer_contact', 'client_stakeholder'] else 'no' }}</td>
+                        <td>{{ 'scoped' if role.value in ['customer_contact', 'client_stakeholder'] else ('yes' if role.value != 'public_visitor' else 'no') }}</td>
+                        <td>{{ 'yes' if role.value in ['platform_admin', 'workflow_analyst', 'developer', 'qa_reviewer', 'support_manager', 'read_only_executive'] else 'no' }}</td>
+                        <td>{{ 'yes' if role.value in ['platform_admin', 'support_manager'] else 'no' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -23,6 +23,17 @@
 </section>
 
 <section class="content-card">
+    <h2>Phase 7 operations</h2>
+    <div class="button-row">
+        <a class="button secondary" href="{{ url_for('export.customerSummary', project_id=project.id) }}">Customer Summary CSV</a>
+        <a class="button secondary" href="{{ url_for('export.blueprintSummary', project_id=project.id) }}">Blueprint Summary CSV</a>
+        <a class="button secondary" href="{{ url_for('export.developerPlanInternal', project_id=project.id) }}">Developer Plan CSV</a>
+        <a class="button secondary" href="{{ url_for('export.qaHandoff', project_id=project.id) }}">QA Handoff CSV</a>
+        <a class="button secondary" href="{{ url_for('support.supportProject', project_id=project.id) }}">Support Workspace</a>
+    </div>
+</section>
+
+<section class="content-card">
     <h2>Workflow summary</h2>
     <p>{{ project.painful_workflow_description }}</p>
     <dl class="definition-list">
@@ -37,6 +48,37 @@
         <dt>Risk flags</dt>
         <dd>{{ project.risk_flags | join(', ') if project.risk_flags else 'None' }}</dd>
     </dl>
+</section>
+
+<section class="content-card">
+    <h2>Customer blueprints</h2>
+    <form class="button-row" action="{{ url_for('blueprint.generateBlueprint', project_id=project.id) }}" method="post">
+        <button class="button primary" type="submit">Generate Blueprint Draft</button>
+    </form>
+    {% if blueprints %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Blueprint</th>
+                        <th>Status</th>
+                        <th>Validation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for blueprint in blueprints %}
+                        <tr>
+                            <td><a href="{{ url_for('blueprint.adminBlueprintDetail', blueprint_id=blueprint.id) }}">{{ blueprint.title }}</a></td>
+                            <td><span class="status-pill">{{ blueprint.status.value }}</span></td>
+                            <td>{{ blueprint.validation_status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No customer blueprint drafts have been generated yet.</p>
+    {% endif %}
 </section>
 
 <section class="metric-grid" aria-label="Intake and audit details">

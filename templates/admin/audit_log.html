@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Audit Log — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">Platform admin</p>
+    <h1>Audit Log</h1>
+    <p class="warning-text">Internal audit history. Safe summaries are shown; raw prompts, raw AI responses, and secrets are not exposed.</p>
+    <p><a href="{{ url_for('export.auditExport') }}">Download audit CSV</a></p>
+</section>
+
+<section class="content-card">
+    <h2>Events</h2>
+    {% if audit_events %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Record</th>
+                        <th>Project</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in audit_events %}
+                        <tr>
+                            <td>{{ event.event_type }}</td>
+                            <td>{{ event.record_type }} · {{ event.record_id }}</td>
+                            <td>{{ event.project_id or 'Platform' }}</td>
+                            <td>{{ event.safe_summary }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No audit events recorded yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

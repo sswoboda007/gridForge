@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}QA Validation — GridForge Command Cloud{% endblock %}
+{% block content %}
+<section class="content-card internal-panel">
+    <p class="eyebrow">QA validation</p>
+    <h1>QA Validation</h1>
+    <p class="warning-text">Internal QA workspace. QA failures block demo and handoff readiness.</p>
+    <p><span class="status-pill">{{ project.status.value }}</span> · {{ project.next_action }}</p>
+</section>
+
+<section class="content-card">
+    <h2>Add QA item</h2>
+    <form class="form-grid" action="{{ url_for('qa.createQaItem', project_id=project.id) }}" method="post">
+        <label>
+            Title
+            <input name="title" required>
+        </label>
+        <label>
+            Related slice id
+            <select name="sliceId">
+                <option value="">Project-level QA item</option>
+                {% for implementation_slice in slices %}
+                    <option value="{{ implementation_slice.id }}">{{ implementation_slice.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label class="full-span">
+            Acceptance criterion
+            <textarea name="acceptanceCriterion" rows="3"></textarea>
+        </label>
+        <label class="full-span">
+            Expected behavior
+            <textarea name="expectedBehavior" rows="3"></textarea>
+        </label>
+        <button class="button primary" type="submit">Add QA Item</button>
+    </form>
+</section>
+
+<section class="content-card">
+    <h2>QA checks</h2>
+    {% if qa_items %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Slice</th>
+                        <th>Acceptance criterion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in qa_items %}
+                        <tr>
+                            <td>{{ item.title }}</td>
+                            <td><span class="status-pill">{{ item.status.value }}</span></td>
+                            <td>{{ item.implementation_slice_id or 'Project' }}</td>
+                            <td>{{ item.acceptance_criterion }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No QA items are ready yet.</p>
+    {% endif %}
+</section>
+{% endblock %}
